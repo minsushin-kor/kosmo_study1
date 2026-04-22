@@ -35,4 +35,10 @@ public class FileManager {
 	    return fileName;
 	}
 	
+	public boolean fileDelete(String name, FileDTO fileDTO) throws Exception{
+		File file = new File(path, name); 
+		file = new File(file, fileDTO.getFileName()); 
+		
+		return file.delete();
+	}
 }

@@ -6,20 +6,41 @@
 
 <mapper namespace="com.google.app.misspet.MisspetMapper">
 	
-	<select id="list">
-		SELECT * FROM "TB_MISSPET"
+	<select id="list" resultMap="detailResult"> 
+		SELECT * FROM "TB_MISSPET" M
+  		LEFT JOIN "TB_MISSPETFILE" F ON M."MISSPET_NUM" = F."MISSPET_NUM"
+ 		ORDER BY M."MISSPET_NUM" DESC
 	</select>
 	
-	<select id="detail" parameterType="MisspetDTO">
-		SELECT * FROM "TB_MISSPET"
-		WHERE "MISSPET_NUM"=#{misspetNum}
+	<select id="detail" parameterType="MisspetDTO" resultMap="detailResult">
+		SELECT * FROM "TB_MISSPET" M
+			LEFT JOIN
+			"TB_MISSPETFILE" F
+			USING("MISSPET_NUM")
+		WHERE M."MISSPET_NUM" =#{misspetNum}
 	</select>
 	
-	<insert id="create" parameterType="MisspetDTO">
+	<resultMap type="MisspetDTO" id="detailResult">
+		<id column="MISSPET_NUM" property="misspetNum"/>
+		<result column="MISSPET_SORT" property="misspetSort"/>
+		<result column="MISSPET_NAME" property="misspetName"/>
+		<result column="MISSPET_TITLE" property="misspetTitle"/>
+		<result column="MISSPET_WRITERID" property="misspetWriterId"/>
+		<result column="MISSPET_CONTENTS" property="misspetContents"/>
+		<result column="MISSPET_PN" property="misspetPn"/>
+		<result column="MISSPET_EMAIL" property="misspetEmail"/>
+		<result column="MEMBER_NUM" property="memberNum"/>
+			<collection property="misspetFileDTO" javaType="List" ofType="MisspetFileDTO">
+       			<result column="FILE_NAME" property="fileName"/>
+        		<result column="FILE_ORINAME" property="fileOriName"/>
+   			</collection>
+	</resultMap>
+	
+	<insert id="create" parameterType="MisspetDTO" useGeneratedKeys="true" keyProperty="misspetNum">
 		INSERT INTO "TB_MISSPET"(
-			"MISSPET_SORT", "MISSPET_NAME", "MISSPET_TITLE", "MISSPET_WRITERID", "MISSPET_CONTENTS", "MISSPET_PN", "MISSPET_EMAIL", "MEMBER_NUM")
+			"MISSPET_NUM", "MISSPET_SORT", "MISSPET_NAME", "MISSPET_TITLE", "MISSPET_WRITERID", "MISSPET_CONTENTS", "MISSPET_PN", "MISSPET_EMAIL", "MEMBER_NUM")
 		VALUES(
-			#{misspetSort}, #{misspetName}, #{misspetTitle}, #{misspetWriterId}, #{misspetContents}, #{misspetPn}, #{misspetEmail}, #{memberNum})
+			default, #{misspetSort}, #{misspetName}, #{misspetTitle}, #{misspetWriterId}, #{misspetContents}, #{misspetPn}, #{misspetEmail}, #{memberNum})
 	</insert>
 
 	<delete id="delete" parameterType="MisspetDTO">
@@ -37,5 +58,17 @@
 			"MISSPET_EMAIL"= #{misspetEmail} 
 		WHERE "MISSPET_NUM" = #{misspetNum}
 	</update>
+	
+	<delete id="deletePetFiles" parameterType="Long">
+    	DELETE FROM "TB_MISSPETFILE" WHERE "MISSPET_NUM" = #{misspetNum}
+	</delete>
+
+	<insert id="addPetFile" parameterType="MisspetFileDTO">
+		INSERT INTO "TB_MISSPETFILE" ("FILE_NAME", "FILE_ORINAME", "MISSPET_NUM")
+		VALUES (
+			#{fileName}, #{fileOriName}, #{misspetNum} 
+		)
+	
+	</insert>
 	
 </mapper>

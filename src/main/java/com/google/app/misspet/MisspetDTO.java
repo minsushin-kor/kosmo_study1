@@ -1,5 +1,7 @@
 package com.google.app.misspet;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,4 +20,6 @@ public class MisspetDTO {
 	private String misspetPn;
 	private String misspetEmail;
 	private Long memberNum;
+	
+	private List<MisspetFileDTO> misspetFileDTO;
 }

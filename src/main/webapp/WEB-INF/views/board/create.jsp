@@ -27,7 +27,7 @@
 					<!-- 수정 부분 -->
 					<div class="card shadow p-4">
 						<h5 class="font-weight-bold text-primary mb-4">🐾 실종 반려동물 등록</h5>
-						<form action="./create" method="post">
+						<form action="./create" method="post" enctype="multipart/form-data">
 							<div class="row mb-3 align-items-center">
 								<div class="col-sm-3 text-muted">반려동물 종류</div>
 								<div class="col-sm-9">
@@ -59,26 +59,40 @@
 								<textarea class="form-control" name="misspetContents" rows="5"
 									placeholder="실종 당시의 옷차림이나 특징을 자세히 적어주세요."></textarea>
 							</div>
-							
+
 							<c:if test="${empty member}">
-							<div class="row mb-3 align-items-center">
-								<div class="col-sm-3 text-muted">연락처</div>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" name="misspetPn"
-										placeholder="연락받으실 전화번호, 휴대폰번호를 입력해주세요.">
+								<div class="row mb-3 align-items-center">
+									<div class="col-sm-3 text-muted">연락처</div>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="misspetPn"
+											placeholder="연락받으실 전화번호, 휴대폰번호를 입력해주세요.">
+									</div>
 								</div>
-							</div>
-							
-							
-							<div class="row mb-3 align-items-center">
-								<div class="col-sm-3 text-muted">이메일</div>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" name="misspetEmail"
-										placeholder="연락받으실 이메일을 입력해주세요.">
+
+
+								<div class="row mb-3 align-items-center">
+									<div class="col-sm-3 text-muted">이메일</div>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="misspetEmail"
+											placeholder="연락받으실 이메일을 입력해주세요.">
+									</div>
 								</div>
-							</div>
 							</c:if>
-							
+
+							<div class="row mb-3">
+								<div class="col-sm-3 text-muted">반려동물 사진 등록 (최대 3장)</div>
+								<div class="col-sm-9">
+									<div class="mb-2">
+										<input type="file" class="form-control-file" name="attach">
+									</div>
+									<div class="mb-2">
+										<input type="file" class="form-control-file" name="attach">
+									</div>
+									<div class="mb-2">
+										<input type="file" class="form-control-file" name="attach">
+									</div>
+								</div>
+							</div>
 
 							<div class="text-center mt-4">
 								<button type="submit" class="btn btn-primary px-5">등록하기</button>

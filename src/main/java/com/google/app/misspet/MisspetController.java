@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.app.member.MemberDTO;
 import com.google.app.member.MemberService;
@@ -31,7 +33,7 @@ public class MisspetController {
 	public String detail(MisspetDTO misspetDTO, Model model, HttpSession session)throws Exception {
 		misspetDTO = misspetService.detail(misspetDTO);
 		model.addAttribute("dto", misspetDTO);
-		
+				
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
 		return "board/detail";
 	}
@@ -42,7 +44,7 @@ public class MisspetController {
 	}
 	
 	@PostMapping("create")
-	public String create(MisspetDTO misspetDTO, HttpSession session)throws Exception{
+	public String create(MisspetDTO misspetDTO, @RequestParam("attach") MultipartFile[] attach, HttpSession session)throws Exception{
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
 	    
 	    if(memberDTO != null) {
@@ -52,7 +54,7 @@ public class MisspetController {
 	        misspetDTO.setMisspetEmail(memberDTO.getMemberEmail());
 	    }
 	    
-	    int result = misspetService.create(misspetDTO);
+	    int result = misspetService.create(misspetDTO, attach);
 		return "redirect:/misspet/list";
 	}
 	
@@ -70,7 +72,7 @@ public class MisspetController {
 	}
 	
 	@PostMapping("update")
-	public String update(MisspetDTO misspetDTO, HttpSession session) throws Exception{
+	public String update(MisspetDTO misspetDTO, @RequestParam("attach") MultipartFile[] files, HttpSession session) throws Exception{
 		
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
 	    
@@ -81,7 +83,7 @@ public class MisspetController {
 	        misspetDTO.setMisspetEmail(memberDTO.getMemberEmail());
 	    }
 	    
-		int result = misspetService.update(misspetDTO);
+		int result = misspetService.update(misspetDTO, files);
 		return "redirect:./list";
 	}
 }
