@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.google.app.misspet.MisspetMapper">
+	
+	<select id="list">
+		SELECT * FROM "TB_MISSPET"
+	</select>
+	
+	<select id="detail" parameterType="MisspetDTO">
+		SELECT * FROM "TB_MISSPET"
+		WHERE "MISSPET_NUM"=#{misspetNum}
+	</select>
+	
+	<insert id="create" parameterType="MisspetDTO">
+		INSERT INTO "TB_MISSPET"(
+			"MISSPET_SORT", "MISSPET_NAME", "MISSPET_TITLE", "MISSPET_WRITERID", "MISSPET_CONTENTS", "MISSPET_PN", "MISSPET_EMAIL", "MEMBER_NUM")
+		VALUES(
+			#{misspetSort}, #{misspetName}, #{misspetTitle}, #{misspetWriterId}, #{misspetContents}, #{misspetPn}, #{misspetEmail}, #{memberNum})
+	</insert>
+
+	<delete id="delete" parameterType="MisspetDTO">
+		DELETE FROM "TB_MISSPET"
+		WHERE "MISSPET_NUM"= #{misspetNum}
+	</delete>
+	
+	<update id="update" parameterType="MisspetDTO">
+		UPDATE "TB_MISSPET"	SET 
+			"MISSPET_NAME"= #{misspetName},
+			"MISSPET_SORT"= #{misspetSort}, 
+			"MISSPET_TITLE"= #{misspetTitle}, 
+			"MISSPET_CONTENTS"= #{misspetContents}, 
+			"MISSPET_PN"= #{misspetPn}, 
+			"MISSPET_EMAIL"= #{misspetEmail} 
+		WHERE "MISSPET_NUM" = #{misspetNum}
+	</update>
+	
+</mapper>

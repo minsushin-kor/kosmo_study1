@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.google.app.member.MemberMapper">
+	<insert id="addProfile" parameterType="MemberFileDTO">
+		INSERT INTO "TB_MEMBERFILE" ("FILE_NAME", "FILE_ORINAME", "MEMBER_NUM")
+		VALUES (
+			#{fileName}, #{fileOriName}, #{memberNum} 
+		)
+	
+	</insert>
+
+	<insert id="join" parameterType="MemberDTO" useGeneratedKeys="true" keyProperty="memberNum">
+		INSERT INTO "TB_MEMBER"
+		VALUES (
+			default, #{memberId}, #{memberPw}, #{memberName}, #{memberPn}, #{memberEmail}
+		)
+	</insert>
+	
+	<select id="login" parameterType="MemberDTO" resultMap="detailResult">
+		SELECT *
+		FROM "TB_MEMBER" M
+			LEFT JOIN
+			"TB_MEMBERFILE" F
+			USING("MEMBER_NUM")
+		WHERE TRIM(M."MEMBER_ID") = #{memberId}
+	</select>
+	
+	<resultMap type="MemberDTO" id="detailResult">
+		<id column="MEMBER_NUM" property="memberNum"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="MEMBER_PW" property="memberPw"/>
+		<result column="MEMBER_NAME" property="memberName"/>
+		<result column="MEMBER_PN" property="memberPn"/>
+		<result column="MEMBER_EMAIL" property="memberEmail"/>
+		<association property="memberFileDTO" javaType="MemberFileDTO">
+			<id column="FILE_NUM" property="fileNum"/>
+			<result column="FILE_NAME" property="fileName"/>
+			<result column="ORI_NAME" property="oriName"/>
+		</association>
+	</resultMap>
+
+</mapper>
